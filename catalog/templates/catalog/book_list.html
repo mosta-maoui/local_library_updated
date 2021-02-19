@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Book List</h1>
+{% if book_list %}
+  <ul>
+      {% for book in book_list %}
+        <p>
+            <a href="{% url 'book-detail' book.pk %}">{{ book.title }}</a> ({{ book.author }})
+            [ <a href="{% url 'book-update' book.pk %}">Edit</a> | <a href="{% url 'book-delete' book.pk %}">Delete</a> ]
+        </p>
+      {% endfor %}
+  </ul>
+{% else %}
+    <p>There is no books available in the library.</p>
+{% endif %}
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}

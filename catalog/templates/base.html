@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title%}
+        <title>Local Library</title>
+    {% endblock title %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+     <!-- Add additional CSS in static file -->
+    <link rel="stylesheet" type="text/css" href="{% static 'catalog/css/styles.css' %}">
+</head>
+<body>
+  <div class="sidenav">
+    {% block sidebar %}
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'books' %}">All books</a>
+      <a href="{% url 'authors' %}">All authors</a>
+      <a href="#contact">Contact</a>
+      <hr>
+      {% if user.is_authenticated %}
+         <p style = "margin-left: 5px ;"><strong>User: {{ user.get_username }}</strong></p>
+         {% if user.is_superuser %}
+         <a href="{% url 'author-create' %}">New author</a>
+         <a href="{% url 'book-create' %}">New Book</a>
+         {% endif %}
+         <a href="{% url 'my-borrowed' %}">My Books</a>
+         <a href="{% url 'logout'%}?next={{request.path}}">Logout</a>
+      {% else %}
+         <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+      {% endif %}
+      <hr>
+      <p style = "margin-left: 5px ;"><strong>Staff</strong></p>
+      <a href="{% url 'all-borrowed' %}">All Borrowed</a>
+    {% endblock %}
+  </div>
+
+
+  
+    <div class="container-fluid">
+       <div class="main">
+        {% block content %}{% endblock %}
+
+      </div>
+    </div>
+</body>
+</html>
